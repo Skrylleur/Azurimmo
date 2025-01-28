@@ -1,5 +1,6 @@
 package bts.sio.azurimmo
 
+import BatimentList
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -12,36 +13,24 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import bts.sio.azurimmo.ui.theme.AzurimmoTheme
+import bts.sio.azurimmo.views.appartement.AppartementList
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContent {
-            AzurimmoTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
-            }
+// Appel de la fonction BatimentList
+            //BatimentList()
+//Appel de la fonction AppartementList
+            AppartementList()
         }
     }
 }
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
+// Fonction pour prévisualiser l'interface
 @Preview(showBackground = true)
 @Composable
-fun GreetingPreview() {
-    AzurimmoTheme {
-        Greeting("Android")
-    }
+fun PreviewBatimentList() {
+    //BatimentList()
+    AppartementList()
 }
