@@ -1,7 +1,14 @@
+package bts.sio.azurimmo.api
+
+import ApiService
+import bts.sio.azurimmo.model.ApiResponse
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.http.GET
+
 object RetrofitInstance {
-    private const val BASE_URL = "http://10.0.2.2:9008/"
+    private const val BASE_URL = "http://172.28.2.134:9008/"
+
     val api: ApiService by lazy {
         Retrofit.Builder()
             .baseUrl(BASE_URL)
@@ -10,3 +17,9 @@ object RetrofitInstance {
             .create(ApiService::class.java)
     }
 }
+
+/*interface ApiService {
+    @GET("batiments")
+    suspend fun getBatiments(): ApiResponse
+}
+*/

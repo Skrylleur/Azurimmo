@@ -12,6 +12,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import bts.sio.azurimmo.model.Batiment
 import bts.sio.azurimmo.ui.theme.AzurimmoTheme
 import bts.sio.azurimmo.views.appartement.AppartementList
 
@@ -22,7 +23,7 @@ class MainActivity : ComponentActivity() {
 // Appel de la fonction BatimentList
             //BatimentList()
 //Appel de la fonction AppartementList
-            AppartementList()
+            BatimentList()
         }
     }
 }
