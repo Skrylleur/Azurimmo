@@ -4,11 +4,12 @@ import bts.sio.azurimmo.model.Batiment
 import androidx.compose.runtime.*
 import androidx.lifecycle.viewModelScope
 import bts.sio.azurimmo.api.RetrofitInstance
+import bts.sio.azurimmo.model.Contrat
 import kotlinx.coroutines.launch
-class BatimentViewModel : ViewModel() {
+class ContratViewModel : ViewModel() {
     // Liste mutable des bâtiments
-    private val _batiments = mutableStateOf<List<Batiment>>(emptyList())
-    val batiments: State<List<Batiment>> = _batiments
+    private val _contrats = mutableStateOf<List<Contrat>>(emptyList())
+    val contrats: State<List<Contrat>> = _contrats
     private val _isLoading = mutableStateOf(false)
 
     val isLoading: State<Boolean> = _isLoading
@@ -16,14 +17,15 @@ class BatimentViewModel : ViewModel() {
     val errorMessage: State<String?> = _errorMessage
     init {
 // Simuler un chargement de données initiales
-        getBatiments()
+        getContrats()
     }
-    private fun getBatiments() {
+
+    private fun getContrats() {
         viewModelScope.launch {
             _isLoading.value = true
             try {
-                val response = RetrofitInstance.api.getBatiments()
-                _batiments.value = response
+                val response = RetrofitInstance.api.getContrats()
+                _contrats.value = response
             } catch (e: Exception) {
                 _errorMessage.value = "Erreur : ${e.message}"
             } finally {

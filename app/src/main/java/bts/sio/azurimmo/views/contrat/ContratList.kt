@@ -1,24 +1,24 @@
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import bts.sio.azurimmo.views.appartement.AppartementCard
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.ui.Alignment
+import bts.sio.azurimmo.model.Contrat
+
 
 @Composable
-fun AppartementList(viewModel: AppartementViewModel = viewModel()) {
-    val appartements = viewModel.appartements.value
+fun ContratList( viewModel: ContratViewModel = viewModel()) {
+    val contrats = viewModel.contrats.value
     val isLoading = viewModel.isLoading.value
     val errorMessage = viewModel.errorMessage.value
-
     Box(modifier = Modifier.fillMaxSize()) {
         when {
             isLoading -> {
@@ -36,12 +36,16 @@ fun AppartementList(viewModel: AppartementViewModel = viewModel()) {
                 )
             }
             else -> {
-                LazyColumn(modifier = Modifier.padding(8.dp)) {
-                    items(appartements) { appartement ->
-                        AppartementCard(appartement = appartement)
+                LazyColumn {
+                    items(contrats) { contrat ->
+                        ContratCard(contrat = contrat) // Appel de la fonction BatimentCard
                     }
                 }
             }
         }
     }
+}
+
+fun items(contrats: List<Contrat>, any: @Composable Any) {
+    TODO("Not yet implemented")
 }

@@ -17,9 +17,3 @@ object RetrofitInstance {
             .create(ApiService::class.java)
     }
 }
-
-/*interface ApiService {
-    @GET("batiments")
-    suspend fun getBatiments(): ApiResponse
-}
-*/
