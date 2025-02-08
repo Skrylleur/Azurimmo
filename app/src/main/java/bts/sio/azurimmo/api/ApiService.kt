@@ -4,6 +4,7 @@ import bts.sio.azurimmo.model.Batiment
 import bts.sio.azurimmo.model.Contrat
 import bts.sio.azurimmo.model.Garant
 import bts.sio.azurimmo.model.Intervention
+import bts.sio.azurimmo.model.Locataire
 import bts.sio.azurimmo.model.Paiement
 
 interface ApiService {
@@ -24,4 +25,7 @@ interface ApiService {
 
     @GET("api/paiements/")
     suspend fun getPaiements(): List<Paiement>
+
+    @GET("api/locataires/")
+    suspend fun getLocataires(): List<Locataire>
 }

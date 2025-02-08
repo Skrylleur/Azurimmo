@@ -5,6 +5,7 @@ import BatimentList
 import ContratList
 import GarantList
 import InterventionList
+import LocataireList
 import PaiementList
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -34,7 +35,8 @@ fun AzurimmoApp() {
         //ContratList()
         //InterventionList()
         //GarantList()
-        PaiementList()
+        //PaiementList()
+        LocataireList()
     }
 }
 
