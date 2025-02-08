@@ -3,6 +3,7 @@ package bts.sio.azurimmo
 import AppartementList
 import BatimentList
 import ContratList
+import GarantList
 import InterventionList
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -30,7 +31,8 @@ fun AzurimmoApp() {
         // Si vous voulez afficher `AppartementList` à la place, remplacez par :
         //AppartementList()
         //ContratList()
-        InterventionList()
+        //InterventionList()
+        GarantList()
     }
 }
 

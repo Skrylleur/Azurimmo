@@ -10,7 +10,7 @@ class GarantViewModel : ViewModel() {
 
     // Liste mutable des interventions
     private val _garants = mutableStateOf<List<Garant>>(emptyList())
-    val interventions: State<List<Garant>> = _garants
+    val garants: State<List<Garant>> = _garants
 
     // État de chargement
     private val _isLoading = mutableStateOf(false)
