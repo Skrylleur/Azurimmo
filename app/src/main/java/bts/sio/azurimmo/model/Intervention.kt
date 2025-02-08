@@ -4,7 +4,7 @@ import android.content.ClipDescription
 import java.util.Date
 
 // Modèle pour une intervention
-data class InetrventionApiResponse(
+data class InterventionApiResponse(
     val embedded: EmbeddedContracts
 )
 
