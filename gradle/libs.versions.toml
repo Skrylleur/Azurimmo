@@ -10,7 +10,8 @@ activityCompose = "1.8.0"
 composeBom = "2024.04.01"
 retrofit = "2.9.0"
 gson = "2.10.1"     # Version pour Gson
-navigation = "2.6.0" # Version pour Navigation Compose
+navigation = "2.7.2"
+benchmarkMacro = "1.3.3" # Version pour Navigation Compose
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -32,6 +33,7 @@ androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 retrofit-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit" }
 navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation" }
+androidx-benchmark-macro = { group = "androidx.benchmark", name = "benchmark-macro", version.ref = "benchmarkMacro" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

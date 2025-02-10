@@ -15,7 +15,7 @@ import androidx.compose.ui.Alignment
 
 
 @Composable
-fun BatimentList( viewModel: BatimentViewModel = viewModel()) {
+fun BatimentList(viewModel: BatimentViewModel = viewModel(), onBatimentClick: Any) {
     val batiments = viewModel.batiments.value
     val isLoading = viewModel.isLoading.value
     val errorMessage = viewModel.errorMessage.value

@@ -1,28 +1,30 @@
-import androidx.compose.runtime.Composable
-import androidx.compose.material3.Text
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.ui.unit.dp
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import java.text.SimpleDateFormat
-import java.util.Locale
+import androidx.compose.ui.unit.dp
 import bts.sio.azurimmo.model.Intervention
 
 @Composable
-fun InterventionCard(intervention: Intervention) {
-    val dateFormat = SimpleDateFormat("dd MMMM yyyy", Locale.getDefault())
-    val formattedDateIntervention = intervention.dateInter?.let { dateFormat.format(it) } ?: "Date non spécifiée"
-
-    Text(
-        text = "Description : ${intervention.description ?: "Pas de description"}",
-        style = MaterialTheme.typography.bodyLarge
-    )
-    Text(
-        text = "Type d'intervention : ${intervention.typeInter ?: "Pas de type d'intervention renseigné"}",
-        style = MaterialTheme.typography.bodyLarge
-    )
-    Text(
-        text = "Date d'intervention : $formattedDateIntervention",
-        style = MaterialTheme.typography.bodyLarge
-    )
+fun InterventionCard(intervention: Intervention) {  // Notez l'annotation @Composable
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp),
+        elevation = CardDefaults.elevatedCardElevation(defaultElevation = 4.dp),
+        shape = RoundedCornerShape(8.dp)    ) {
+        Column(
+            modifier = Modifier.padding(16.dp)
+        ) {
+            Text(text = intervention.dateInter.toString(), style = MaterialTheme.typography.bodyMedium)
+            Text(text = intervention.description, style = MaterialTheme.typography.bodyMedium)
+            Text(text = intervention.typeInter, style = MaterialTheme.typography.bodyMedium)
+        }
+    }
 }

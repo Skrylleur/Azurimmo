@@ -14,7 +14,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import bts.sio.azurimmo.views.appartement.AppartementCard
 
 @Composable
-fun AppartementList(viewModel: AppartementViewModel = viewModel()) {
+fun AppartementList(viewModel: AppartementViewModel = viewModel(), batimentId: Int) {
     val appartements = viewModel.appartements.value
     val isLoading = viewModel.isLoading.value
     val errorMessage = viewModel.errorMessage.value

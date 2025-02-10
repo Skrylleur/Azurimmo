@@ -52,6 +52,8 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.retrofit.gson)
     implementation(libs.navigation.compose)
+    implementation(libs.androidx.benchmark.macro)
+    implementation(libs.navigation.compose)
 
     testImplementation(libs.junit)
 

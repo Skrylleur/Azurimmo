@@ -1,6 +1,7 @@
 package bts.sio.azurimmo.views.appartement
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -10,6 +11,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import bts.sio.azurimmo.model.Appartement
 
@@ -25,32 +27,38 @@ fun AppartementCard(appartement: Appartement) {
         Column(
             modifier = Modifier.padding(16.dp)
         ) {
-            // Affiche le numéro d'appartement
-            Text(
-                text = "Appartement N°${appartement.numero}",
-                style = MaterialTheme.typography.bodyLarge
-            )
+            Row {
+                Text(
+                    text = "Numero : ",
+                    style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold)
+                )
+                Text(
+                    text = appartement.numero,
+                    style = MaterialTheme.typography.bodyLarge
+                )
+            }
 
-            // Affiche la surface
-            Text(
-                text = "Surface : ${appartement.surface} m²",
-                style = MaterialTheme.typography.bodyMedium,
-                modifier = Modifier.padding(top = 4.dp)
-            )
+            Row {
+                Text(
+                    text = "Description : ",
+                    style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold)
+                )
+                Text(
+                    text = appartement.description,
+                    style = MaterialTheme.typography.bodyLarge
+                )
+            }
 
-            // Affiche le nombre de pièces
-            Text(
-                text = "Nombre de pièces : ${appartement.nbrePieces}",
-                style = MaterialTheme.typography.bodyMedium,
-                modifier = Modifier.padding(top = 4.dp)
-            )
-
-            // Affiche la description
-            Text(
-                text = appartement.description,
-                style = MaterialTheme.typography.bodyMedium,
-                modifier = Modifier.padding(top = 8.dp)
-            )
+            Row {
+                Text(
+                    text = "Surface : ",
+                    style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold)
+                )
+                Text(
+                    text = String.format("%.2f", appartement.surface),
+                    style = MaterialTheme.typography.bodyLarge
+                )
+            }
         }
     }
 }
