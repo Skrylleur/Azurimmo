@@ -25,7 +25,7 @@ fun AzurimmoApp() {
         // Par exemple : BatimentList ou AppartementList
         //BatimentList()
         // Si vous voulez afficher `AppartementList` à la place, remplacez par :
-        AppartementList(batimentId = batimentId)
+        //AppartementList(batimentId = batimentId)
         //ContratList()
         //InterventionList()
         //GarantList()
