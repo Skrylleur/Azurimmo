@@ -1,3 +1,4 @@
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -12,11 +13,12 @@ import androidx.compose.ui.unit.dp
 import bts.sio.azurimmo.model.Batiment
 
 @Composable
-fun BatimentCard(batiment: Batiment, onClick: () -> Unit) { // Notez l'annotation @Composable
+fun BatimentCard(batiment: Batiment, onClick: (Int) -> Unit) {  // Notez l'annotation @Composable
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(8.dp),
+            .padding(8.dp)
+            .clickable { onClick(batiment.id)},
         elevation = CardDefaults.elevatedCardElevation(defaultElevation = 4.dp),
         shape = RoundedCornerShape(8.dp)
     ) {
