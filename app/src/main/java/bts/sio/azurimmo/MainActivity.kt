@@ -33,10 +33,10 @@ fun AzurimmoApp() {
         // Si vous voulez afficher `AppartementList` à la place, remplacez par :
         //AppartementList()
         //ContratList()
-        //InterventionList()
+        InterventionList()
         //GarantList()
         //PaiementList()
-        LocataireList()
+        //LocataireList()
     }
 }
 
