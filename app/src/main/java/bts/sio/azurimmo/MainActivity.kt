@@ -1,47 +1,43 @@
 package bts.sio.azurimmo
 
-import AppartementList
-import BatimentList
-import ContratList
-import GarantList
-import InterventionList
-import LocataireList
-import PaiementList
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import bts.sio.azurimmo.ui.theme.AzurimmoTheme
-
+import bts.sio.azurimmo.views.appartement.AppartementList
+import bts.sio.azurimmo.views.batiment.BatimentList
+//import bts.sio.azurimmo.views.contrat.ContratList
+//import bts.sio.azurimmo.views.intervention.InterventionList
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            AzurimmoApp()
+            MainScreen()
+            //InterventionList()
+            //ContratList()
+            //BatimentList()
+            //AppartementList()
         }
     }
 }
-
-@Composable
-fun AzurimmoApp() {
-    AzurimmoTheme {
-        // Sélectionnez le composable que vous voulez afficher
-        // Par exemple : BatimentList ou AppartementList
-        //BatimentList()
-        // Si vous voulez afficher `AppartementList` à la place, remplacez par :
-        //AppartementList()
-        //ContratList()
-        InterventionList()
-        //GarantList()
-        //PaiementList()
-        //LocataireList()
-    }
-}
-
+/*// Fonction pour prévisualiser l'interface
 @Preview(showBackground = true)
 @Composable
-fun DefaultPreview() {
-    AzurimmoApp()
+fun PreviewBatimentList() {
+    BatimentList()
 }
+// Fonction pour prévisualiser l'interface
+@Preview(showBackground = true)
+@Composable
+fun PreviewAppartementList() {
+    AppartementList()
+}
+// Fonction pour prévisualiser l'interface
+@Preview(showBackground = true)
+@Composable
+fun PreviewContratList() {
+    ContratList()
+}
+*/

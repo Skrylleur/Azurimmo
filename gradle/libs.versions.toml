@@ -10,7 +10,7 @@ activityCompose = "1.8.0"
 composeBom = "2024.04.01"
 retrofit = "2.9.0"
 gson = "2.10.1"     # Version pour Gson
-navigation = "2.6.0" # Version pour Navigation Compose
+navigation = "2.7.2"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
