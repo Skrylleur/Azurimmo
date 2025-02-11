@@ -18,7 +18,7 @@ fun AppHeader() {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .background(Color.Blue) // Fond bleu
+            .background(Color(0xFF028090))
             .padding(vertical = 16.dp) // Espacement vertical pour un effet plus aéré
     ) {
         Text(

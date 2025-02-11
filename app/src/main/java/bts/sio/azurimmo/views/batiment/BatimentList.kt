@@ -1,27 +1,23 @@
 package bts.sio.azurimmo.views.batiment
 
 import BatimentViewModel
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 
-// Fonction Composable pour afficher la liste des bâtiments
+// Fonction Composable pour afficher la liste des bâtiments avec un bouton d'ajout
 @Composable
 fun BatimentList(
     viewModel: BatimentViewModel = viewModel(),
-    onBatimentClick: (Int) -> Unit
+    onBatimentClick: (Int) -> Unit,
+    onAddBatimentClick: () -> Unit // Nouveau paramètre pour ajouter un bâtiment
 ) {
-
     val batiments = viewModel.batiments.value
     val isLoading = viewModel.isLoading.value
     val errorMessage = viewModel.errorMessage.value
@@ -43,17 +39,31 @@ fun BatimentList(
                 )
             }
             else -> {
-                LazyColumn {
-                    items(batiments) { batiment ->
-                        BatimentCard(
-                            batiment = batiment,
-                            onClick = { onBatimentClick(batiment.id) }
-                        )
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    // Bouton pour ajouter un bâtiment
+                    Button(
+                        onClick = onAddBatimentClick,
+                        modifier = Modifier
+                            .padding(16.dp)
+                            .widthIn(min = 150.dp, max = 300.dp)
+                    ) {
+                        Text("Ajouter un bâtiment")
+                    }
+
+                    // Liste des bâtiments
+                    LazyColumn {
+                        items(batiments) { batiment ->
+                            BatimentCard(
+                                batiment = batiment,
+                                onClick = { onBatimentClick(batiment.id) }
+                            )
+                        }
                     }
                 }
             }
         }
     }
-
-
 }

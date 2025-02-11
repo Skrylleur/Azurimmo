@@ -8,6 +8,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import androidx.lifecycle.viewmodel.compose.viewModel
 import bts.sio.azurimmo.views.appartement.AppartementList
 import bts.sio.azurimmo.views.batiment.BatimentList
 
@@ -18,20 +19,31 @@ fun AppNavigation(navController: NavHostController, modifier: Modifier = Modifie
         startDestination = "batiment_list",
         modifier = modifier
     ) {
+        // Liste des bâtiments avec bouton d'ajout
         composable("batiment_list") {
             BatimentList(
                 onBatimentClick = { batimentId ->
                     navController.navigate("batiment_appartements_list/$batimentId")
+                },
+                onAddBatimentClick = {
+                    navController.navigate("add_batiment")
                 }
             )
         }
+        // Liste des appartements avec bouton d'ajout
         composable(
             route = "batiment_appartements_list/{batimentId}",
             arguments = listOf(navArgument("batimentId") { type = NavType.IntType })
         ) { backStackEntry ->
             val batimentId = backStackEntry.arguments?.getInt("batimentId")
             if (batimentId != null) {
-                AppartementList(batimentId = batimentId)
+                AppartementList(
+                    batimentId = batimentId,
+                    viewModel = viewModel(), // Récupération du ViewModel
+                    onAddAppartementClick = {
+                        navController.navigate("add_appartement/$batimentId")
+                    },
+                )
             } else {
                 Text("Erreur : Identifiant de bâtiment manquant")
             }
