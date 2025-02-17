@@ -6,6 +6,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -51,21 +53,20 @@ fun AppartementList(
                 )
             }
             else -> {
-                Column(
-                    modifier = Modifier.fillMaxSize(),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    // Bouton pour ajouter un appartement
-                    Button(
-                        onClick = onAddAppartementClick,
-                        modifier = Modifier
-                            .padding(16.dp)
-                            .widthIn(min = 150.dp, max = 300.dp)
-                    ) {
-                        Text("Ajouter un appartement")
+                FloatingActionButton(
+                    onClick = {
+                        println("Bouton + cliqué") // Vérification Logcat
+                        onAddAppartementClick()
+                    },
+                    modifier = Modifier
+                        .align(Alignment.BottomEnd) // Assure qu'il est bien visible
+                        .padding(16.dp)
+                        .background(MaterialTheme.colorScheme.secondary),
+                    content = {
+                        Icon(Icons.Default.Add, contentDescription = "Ajouter un appartement")
                     }
-
-                    LazyColumn {
+                )
+                LazyColumn {
                         if (batiment != null) {
                             item {
                                 Column(
@@ -129,4 +130,3 @@ fun AppartementList(
             }
         }
     }
-}
