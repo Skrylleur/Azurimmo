@@ -10,6 +10,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.lifecycle.viewmodel.compose.viewModel
 import bts.sio.azurimmo.views.appartement.AppartementList
+import bts.sio.azurimmo.views.batiment.BatimentAdd
 import bts.sio.azurimmo.views.batiment.BatimentList
 
 @Composable
@@ -48,5 +49,13 @@ fun AppNavigation(navController: NavHostController, modifier: Modifier = Modifie
                 Text("Erreur : Identifiant de bâtiment manquant")
             }
         }
+
+        composable("add_batiment") {
+            BatimentAdd(onBatimentAdd = {
+                navController.popBackStack() // La navigation est gérée ici
+            })
+        }
+
     }
+
 }
