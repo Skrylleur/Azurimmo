@@ -7,20 +7,28 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import bts.sio.azurimmo.views.BatimentScreen
 import bts.sio.azurimmo.views.AppartementScreen
+import bts.sio.azurimmo.views.HomeScreen
 
 @Composable
 fun AppNavigation(navController: NavHostController, modifier: Modifier = Modifier) {
     NavHost(
         navController = navController,
-        startDestination = "appartements", // ou "appartements" selon ce que tu veux tester en premier
+        startDestination = "home", // 👈 très important !
         modifier = modifier
     ) {
+        composable("home") {
+            HomeScreen(
+                onNavigateToBatiments = { navController.navigate("batiments") },
+                onNavigateToAppartements = { navController.navigate("appartements") }
+            )
+        }
+
         composable("batiments") {
-            BatimentScreen()
+            BatimentScreen(navController = navController)
         }
 
         composable("appartements") {
-            AppartementScreen()
+            AppartementScreen(navController = navController)
         }
     }
 }
