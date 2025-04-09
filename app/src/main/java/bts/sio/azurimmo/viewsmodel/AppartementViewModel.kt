@@ -38,10 +38,10 @@ class AppartementViewModel : ViewModel() {
     }
 
     // ➕ Fonction d'ajout (POST)
-    fun addAppartement(numero: String, surface: String, nb_pieces: String, description: String, batiment_id: Long) {
+    fun addAppartement(numero: String, surface: String, nb_pieces: String, description: String) {
         viewModelScope.launch {
             try {
-                repository.create(Appartement(numero = numero, surface = surface, nb_pieces = nb_pieces, description = description, batiment_id = batiment_id))
+                repository.create(Appartement(numero = numero, surface = surface, nb_pieces = nb_pieces, description = description))
                 loadAppartements()
             } catch (e: Exception) {
                 println("Erreur création : ${e.message}")
@@ -50,10 +50,10 @@ class AppartementViewModel : ViewModel() {
     }
 
     // ✏️ Fonction de mise à jour (PUT)
-    fun updateAppartement(id: Long, numero: String, surface: String, nb_pieces: String, description: String, batiment_id: Long) {
+    fun updateAppartement(id: Long, numero: String, surface: String, nb_pieces: String, description: String) {
         viewModelScope.launch {
             try {
-                repository.update(id, Appartement(id = id, numero = numero, surface = surface, nb_pieces = nb_pieces, description = description, batiment_id = batiment_id))
+                repository.update(id, Appartement(id = id, numero = numero, surface = surface, nb_pieces = nb_pieces, description = description))
                 loadAppartements()
             } catch (e: Exception) {
                 println("Erreur modification : ${e.message}")

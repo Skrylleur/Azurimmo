@@ -1,17 +1,9 @@
 package bts.sio.azurimmo.model
 
-import android.content.ClipDescription
-import java.util.Date
-
-// Modèle pour une intervention
-data class LocataireApiResponse(
-    val embedded: EmbeddedContracts
-)
-
 data class Locataire(
-    val id: Int,
+    val id: Long = 0,
     val nom: String,
     val prenom: String,
-    val dateN: Date,
+    val dateN: String,
     val lieuN: String
 )

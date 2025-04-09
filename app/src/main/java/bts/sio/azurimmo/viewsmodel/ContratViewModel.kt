@@ -1,36 +1,81 @@
-import androidx.lifecycle.ViewModel
-import androidx.compose.runtime.mutableStateOf
-import bts.sio.azurimmo.model.Batiment
-import androidx.compose.runtime.*
-import androidx.lifecycle.viewModelScope
-import bts.sio.azurimmo.api.RetrofitInstance
-import bts.sio.azurimmo.model.Contrat
-import kotlinx.coroutines.launch
-class ContratViewModel : ViewModel() {
-    // Liste mutable des bâtiments
-    private val _contrats = mutableStateOf<List<Contrat>>(emptyList())
-    val contrats: State<List<Contrat>> = _contrats
-    private val _isLoading = mutableStateOf(false)
+package bts.sio.azurimmo.viewmodel
 
-    val isLoading: State<Boolean> = _isLoading
-    private val _errorMessage = mutableStateOf<String?>(null)
-    val errorMessage: State<String?> = _errorMessage
+import Contrat
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import bts.sio.azurimmo.api.ApiClient
+import bts.sio.azurimmo.repository.ContratRepository
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
+
+class ContratViewModel : ViewModel() {
+
+    private val repository = ContratRepository(ApiClient.contratApi)
+
+    private val _contrats = MutableStateFlow<List<Contrat>>(emptyList())
+    val contrats: StateFlow<List<Contrat>> = _contrats
+
     init {
-// Simuler un chargement de données initiales
-        getContrats()
+        loadContrats()
     }
 
-    private fun getContrats() {
+    fun loadContrats() {
         viewModelScope.launch {
-            _isLoading.value = true
             try {
-                val response = RetrofitInstance.api.getContrats()
+                val response = repository.getAll()
                 _contrats.value = response
+                println("✅ Données récupérées : ${response.size} contrats")
             } catch (e: Exception) {
-                _errorMessage.value = "Erreur : ${e.message}"
-            } finally {
-                _isLoading.value = false
-                println("pas de chargement")
+                println("❌ Erreur chargement : ${e.message}")
+            }
+        }
+    }
+
+    fun addContrat(dateEntree: String, dateSortie: String, montantLoyer: String, montantCharges: String, statut: String) {
+        viewModelScope.launch {
+            try {
+                val contrat = Contrat(
+                    dateEntree = dateEntree,
+                    dateSortie = dateSortie,
+                    montantLoyer = montantLoyer.toDouble(),
+                    montantCharges = montantCharges.toDouble(),
+                    statut = statut
+                )
+                repository.create(contrat)
+                loadContrats()
+            } catch (e: Exception) {
+                println("❌ Erreur création : ${e.message}")
+            }
+        }
+    }
+
+    fun updateContrat(id: Long, dateEntree: String, dateSortie: String, montantLoyer: String, montantCharges: String, statut: String) {
+        viewModelScope.launch {
+            try {
+                val contrat = Contrat(
+                    id = id,
+                    dateEntree = dateEntree,
+                    dateSortie = dateSortie,
+                    montantLoyer = montantLoyer.toDouble(),
+                    montantCharges = montantCharges.toDouble(),
+                    statut = statut
+                )
+                repository.update(id, contrat)
+                loadContrats()
+            } catch (e: Exception) {
+                println("❌ Erreur modification : ${e.message}")
+            }
+        }
+    }
+
+    fun deleteContrat(id: Long) {
+        viewModelScope.launch {
+            try {
+                repository.delete(id)
+                loadContrats()
+            } catch (e: Exception) {
+                println("❌ Erreur suppression : ${e.message}")
             }
         }
     }

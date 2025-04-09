@@ -16,4 +16,5 @@ object ApiClient {
     //Retrofit va créer un objet qui sait comment appeler chaque route HTTP définie dans BatimentApi.kt
     val batimentApi: BatimentApi = retrofit.create(BatimentApi::class.java)
     val appartementApi: AppartementApi = retrofit.create(AppartementApi::class.java)
+    val contratApi: ContratApi = retrofit.create(ContratApi::class.java)
 }

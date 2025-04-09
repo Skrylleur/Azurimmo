@@ -5,6 +5,5 @@ data class Appartement(
     val numero: String,
     val surface: String,
     val nb_pieces: String,
-    val description: String,
-    val batiment_id: Long
+    val description: String
 )

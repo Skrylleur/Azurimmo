@@ -10,7 +10,8 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun HomeScreen(
     onNavigateToBatiments: () -> Unit,
-    onNavigateToAppartements: () -> Unit
+    onNavigateToAppartements: () -> Unit,
+    onNavigateToContrats: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -38,5 +39,15 @@ fun HomeScreen(
         ) {
             Text("Voir les appartements")
         }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Button(
+            onClick = onNavigateToContrats,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text("Voir les contrats")
+        }
+
     }
 }

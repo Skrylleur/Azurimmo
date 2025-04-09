@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import bts.sio.azurimmo.views.BatimentScreen
 import bts.sio.azurimmo.views.AppartementScreen
+import bts.sio.azurimmo.views.ContratScreen
 import bts.sio.azurimmo.views.HomeScreen
 
 @Composable
@@ -19,7 +20,8 @@ fun AppNavigation(navController: NavHostController, modifier: Modifier = Modifie
         composable("home") {
             HomeScreen(
                 onNavigateToBatiments = { navController.navigate("batiments") },
-                onNavigateToAppartements = { navController.navigate("appartements") }
+                onNavigateToAppartements = { navController.navigate("appartements") },
+                onNavigateToContrats = {navController.navigate("contrats")}
             )
         }
 
@@ -29,6 +31,10 @@ fun AppNavigation(navController: NavHostController, modifier: Modifier = Modifie
 
         composable("appartements") {
             AppartementScreen(navController = navController)
+        }
+
+        composable("contrats") {
+            ContratScreen(navController = navController)
         }
     }
 }
