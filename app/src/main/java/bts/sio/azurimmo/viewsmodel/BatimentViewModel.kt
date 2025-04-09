@@ -1,80 +1,75 @@
-import androidx.compose.runtime.mutableStateOf
+package bts.sio.azurimmo.viewmodel
+
 import androidx.lifecycle.ViewModel
-import bts.sio.azurimmo.model.Batiment
-import androidx.compose.runtime.*
 import androidx.lifecycle.viewModelScope
-import bts.sio.azurimmo.api.RetrofitInstance
+import bts.sio.azurimmo.api.ApiClient
+import bts.sio.azurimmo.model.Batiment
+import bts.sio.azurimmo.repository.BatimentRepository
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class BatimentViewModel : ViewModel() {
 
-    // Liste mutable des bâtiments
-    private val _batiments = mutableStateOf<List<Batiment>>(emptyList())
-    val batiments: State<List<Batiment>> = _batiments
+    // Connexion au Repository
+    private val repository = BatimentRepository(ApiClient.batimentApi)
 
-    private val _batiment = mutableStateOf<Batiment?>(null)
-    val batiment: State<Batiment?> = _batiment
+    // Flux de données : liste observable
+    private val _batiments = MutableStateFlow<List<Batiment>>(emptyList())
+    val batiments: StateFlow<List<Batiment>> = _batiments
 
-    private val _isLoading = mutableStateOf(false)
-    val isLoading: State<Boolean> = _isLoading
-
-    private val _errorMessage = mutableStateOf<String?>(null)
-    val errorMessage: State<String?> = _errorMessage
-
+    // Chargement initial à la création du ViewModel
     init {
-        // Simuler un chargement de données initiales
-        getBatiments()
+        loadBatiments()
     }
 
-    fun getBatiments() {
+    // 🔁 Fonction de chargement (GET)
+    fun loadBatiments() {
         viewModelScope.launch {
-            _isLoading.value = true
             try {
-                val response = RetrofitInstance.api.getBatiments()
-                _batiments.value = response
+                val response = repository.getAll()  // ✅ On récupère les données
+                _batiments.value = response         // ✅ On met à jour le flux
+                println("✅ Données récupérées : ${response.size} bâtiments")
             } catch (e: Exception) {
-                _errorMessage.value = "Erreur : ${e.message}"
-            } finally {
-                _isLoading.value = false
-                println("pas de chargement")
+                println("Erreur chargement : ${e.message}")
+                println("❌ Erreur réseau : ${e.message}")
             }
         }
     }
 
-    fun getBatiment(batimentId: Int) {
+    // ➕ Fonction d'ajout (POST)
+    fun addBatiment(adresse: String, ville: String) {
         viewModelScope.launch {
-            _isLoading.value = true
             try {
-                val response = RetrofitInstance.api.getBatimentById(batimentId)
-                _batiment.value = response
-                println("Bâtiment chargé : $response")
+                repository.create(Batiment(adresse = adresse, ville = ville))
+                loadBatiments()
             } catch (e: Exception) {
-                println("Erreur lors du chargement du bâtiment : ${e.message}")
-            } finally {
-                _isLoading.value = false
+                println("Erreur création : ${e.message}")
             }
         }
     }
 
-    fun addBatiment(batiment: Batiment) {
+    // ✏️ Fonction de mise à jour (PUT)
+    fun updateBatiment(id: Long, adresse: String, ville: String) {
         viewModelScope.launch {
-            _isLoading.value = true
             try {
-// Envoi à l'API (ici, un POST)
-                val response = RetrofitInstance.api.addBatiment(batiment)
-                if (response.isSuccessful) {
-// Ajout réussi, on met à jour la liste des bâtiments
-                    getBatiments() // Recharge les bâtiments pour inclure le nouveau
-                } else {
-                    _errorMessage.value = "Erreur lors de l'ajout du bâtiment : ${response.message()}"
-                }
+                repository.update(id, Batiment(id = id, adresse = adresse, ville = ville))
+                loadBatiments()
             } catch (e: Exception) {
-                _errorMessage.value = "Erreur : ${e.message}"
-            } finally {
-                _isLoading.value = false
+                println("Erreur modification : ${e.message}")
+            }
+        }
+    }
+
+    // ❌ Fonction de suppression (DELETE)
+    fun deleteBatiment(id: Long) {
+        viewModelScope.launch {
+            try {
+                repository.delete(id)
+                loadBatiments()
+            } catch (e: Exception) {
+                println("Erreur suppression : ${e.message}")
             }
         }
     }
 }
-
-

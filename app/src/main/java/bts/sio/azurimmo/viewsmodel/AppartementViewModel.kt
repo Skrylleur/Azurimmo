@@ -1,60 +1,75 @@
-import androidx.compose.runtime.mutableStateOf
+package bts.sio.azurimmo.viewmodel
+
 import androidx.lifecycle.ViewModel
-import bts.sio.azurimmo.model.Appartement
-import androidx.compose.runtime.*
 import androidx.lifecycle.viewModelScope
-import bts.sio.azurimmo.api.RetrofitInstance
+import bts.sio.azurimmo.api.ApiClient
+import bts.sio.azurimmo.model.Appartement
+import bts.sio.azurimmo.repository.AppartementRepository
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class AppartementViewModel : ViewModel() {
 
-    // Liste mutable des bâtiments
-    private val _appartements = mutableStateOf<List<Appartement>>(emptyList())
-    val appartements: State<List<Appartement>> = _appartements
+    // Connexion au Repository
+    private val repository = AppartementRepository(ApiClient.appartementApi)
 
-    private val _isLoading = mutableStateOf(false)
-    val isLoading: State<Boolean> = _isLoading
+    // Flux de données : liste observable
+    private val _appartements = MutableStateFlow<List<Appartement>>(emptyList())
+    val appartements: StateFlow<List<Appartement>> = _appartements
 
-    private val _errorMessage = mutableStateOf<String?>(null)
-    val errorMessage: State<String?> = _errorMessage
-
+    // Chargement initial à la création du ViewModel
     init {
-        // Simuler un chargement de données initiales
-        getAppartements()
+        loadAppartements()
     }
 
-    private fun getAppartements() {
+    // 🔁 Fonction de chargement (GET)
+    fun loadAppartements() {
         viewModelScope.launch {
-            _isLoading.value = true
             try {
-                val response = RetrofitInstance.api.getAppartements()
-                _appartements.value = response
+                val response = repository.getAll()  // ✅ On récupère les données
+                _appartements.value = response         // ✅ On met à jour le flux
+                println("✅ Données récupérées : ${response.size} appartements")
             } catch (e: Exception) {
-                _errorMessage.value = "Erreur : ${e.message}"
-            } finally {
-                _isLoading.value = false
-                println("pas de chargement")
+                println("Erreur chargement : ${e.message}")
+                println("❌ Erreur réseau : ${e.message}")
             }
         }
     }
 
-    fun getAppartementsByBatimentId(batimentId: Int) {
+    // ➕ Fonction d'ajout (POST)
+    fun addAppartement(numero: String, surface: String, nb_pieces: String, description: String, batiment_id: Long) {
         viewModelScope.launch {
-            _isLoading.value = true
             try {
-                val response = RetrofitInstance.api.getAppartementsByBatimentId(batimentId)
-                if (response.isNotEmpty()) {
-                    _appartements.value = response
-                    println("Appartements chargés : $response")
-                } else {
-                    println("Aucun appartement trouvé pour le bâtiment $batimentId")
-                }
+                repository.create(Appartement(numero = numero, surface = surface, nb_pieces = nb_pieces, description = description, batiment_id = batiment_id))
+                loadAppartements()
             } catch (e: Exception) {
-                println("Erreur lors du chargement des appartements : ${e.message}")
-            } finally {
-                _isLoading.value = false
+                println("Erreur création : ${e.message}")
             }
         }
     }
 
+    // ✏️ Fonction de mise à jour (PUT)
+    fun updateAppartement(id: Long, numero: String, surface: String, nb_pieces: String, description: String, batiment_id: Long) {
+        viewModelScope.launch {
+            try {
+                repository.update(id, Appartement(id = id, numero = numero, surface = surface, nb_pieces = nb_pieces, description = description, batiment_id = batiment_id))
+                loadAppartements()
+            } catch (e: Exception) {
+                println("Erreur modification : ${e.message}")
+            }
+        }
+    }
+
+    // ❌ Fonction de suppression (DELETE)
+    fun deleteBatiment(id: Long) {
+        viewModelScope.launch {
+            try {
+                repository.delete(id)
+                loadAppartements()
+            } catch (e: Exception) {
+                println("Erreur suppression : ${e.message}")
+            }
+        }
+    }
 }

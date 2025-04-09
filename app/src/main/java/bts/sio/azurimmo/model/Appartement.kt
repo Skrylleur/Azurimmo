@@ -1,9 +1,10 @@
 package bts.sio.azurimmo.model
 
 data class Appartement(
-    val id: Int,
+    val id: Long = 0,
     val numero: String,
-    val surface: Double,
-    val nbrePieces: Int,
-    val description: String
+    val surface: String,
+    val nb_pieces: String,
+    val description: String,
+    val batiment_id: Long
 )
