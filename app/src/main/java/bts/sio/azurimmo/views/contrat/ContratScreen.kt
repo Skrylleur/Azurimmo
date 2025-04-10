@@ -1,6 +1,5 @@
 package bts.sio.azurimmo.views
 
-import Contrat
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -13,6 +12,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import bts.sio.azurimmo.viewmodel.ContratViewModel
+import bts.sio.azurimmo.model.Contrat
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

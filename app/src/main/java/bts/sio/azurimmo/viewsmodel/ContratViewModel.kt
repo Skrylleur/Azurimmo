@@ -1,6 +1,6 @@
 package bts.sio.azurimmo.viewmodel
 
-import Contrat
+import bts.sio.azurimmo.model.Contrat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import bts.sio.azurimmo.api.ApiClient
@@ -38,8 +38,8 @@ class ContratViewModel : ViewModel() {
                 val contrat = Contrat(
                     dateEntree = dateEntree,
                     dateSortie = dateSortie,
-                    montantLoyer = montantLoyer.toDouble(),
-                    montantCharges = montantCharges.toDouble(),
+                    montantLoyer = montantLoyer.toDouble().toString(),
+                    montantCharges = montantCharges.toDouble().toString(),
                     statut = statut
                 )
                 repository.create(contrat)
@@ -57,8 +57,8 @@ class ContratViewModel : ViewModel() {
                     id = id,
                     dateEntree = dateEntree,
                     dateSortie = dateSortie,
-                    montantLoyer = montantLoyer.toDouble(),
-                    montantCharges = montantCharges.toDouble(),
+                    montantLoyer = montantLoyer.toDouble().toString(),
+                    montantCharges = montantCharges.toDouble().toString(),
                     statut = statut
                 )
                 repository.update(id, contrat)

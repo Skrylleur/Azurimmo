@@ -17,4 +17,5 @@ object ApiClient {
     val batimentApi: BatimentApi = retrofit.create(BatimentApi::class.java)
     val appartementApi: AppartementApi = retrofit.create(AppartementApi::class.java)
     val contratApi: ContratApi = retrofit.create(ContratApi::class.java)
+    val garantApi: GarantApi = retrofit.create(GarantApi::class.java)
 }

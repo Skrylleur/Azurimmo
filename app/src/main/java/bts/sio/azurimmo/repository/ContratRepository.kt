@@ -1,7 +1,8 @@
 package bts.sio.azurimmo.repository
 
-import Contrat
+
 import bts.sio.azurimmo.api.ContratApi
+import bts.sio.azurimmo.model.Contrat
 
 class ContratRepository(private val api: ContratApi) {
 

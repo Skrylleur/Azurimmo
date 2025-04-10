@@ -1,6 +1,6 @@
 package bts.sio.azurimmo.api
 
-import Contrat
+import bts.sio.azurimmo.model.Contrat
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
