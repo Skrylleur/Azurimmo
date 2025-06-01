@@ -1,9 +1,10 @@
 package bts.sio.azurimmo.viewmodel
 
-import bts.sio.azurimmo.model.Contrat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import bts.sio.azurimmo.api.ApiClient
+import bts.sio.azurimmo.model.AppartementRef
+import bts.sio.azurimmo.model.Contrat
 import bts.sio.azurimmo.repository.ContratRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -23,16 +24,31 @@ class ContratViewModel : ViewModel() {
     fun loadContrats() {
         viewModelScope.launch {
             try {
-                val response = repository.getAll()
-                _contrats.value = response
-                println("✅ Données récupérées : ${response.size} contrats")
+                _contrats.value = repository.getAll()
             } catch (e: Exception) {
-                println("❌ Erreur chargement : ${e.message}")
+                println("❌ Erreur chargement contrats : ${e.message}")
             }
         }
     }
 
-    fun addContrat(dateEntree: String, dateSortie: String, montantLoyer: String, montantCharges: String, statut: String) {
+    fun loadParAppartement(appartementId: Long) {
+        viewModelScope.launch {
+            try {
+                _contrats.value = repository.getByAppartement(appartementId)
+            } catch (e: Exception) {
+                println("❌ Erreur chargement contrats par appartement : ${e.message}")
+            }
+        }
+    }
+
+    fun addContrat(
+        dateEntree: String,
+        dateSortie: String,
+        montantLoyer: String,
+        montantCharges: String,
+        statut: String,
+        appartementId: Long
+    ) {
         viewModelScope.launch {
             try {
                 val contrat = Contrat(
@@ -40,17 +56,26 @@ class ContratViewModel : ViewModel() {
                     dateSortie = dateSortie,
                     montantLoyer = montantLoyer.toDouble().toString(),
                     montantCharges = montantCharges.toDouble().toString(),
-                    statut = statut
+                    statut = statut,
+                    appartement = AppartementRef(appartementId)
                 )
                 repository.create(contrat)
                 loadContrats()
             } catch (e: Exception) {
-                println("❌ Erreur création : ${e.message}")
+                println("❌ Erreur ajout contrat : ${e.message}")
             }
         }
     }
 
-    fun updateContrat(id: Long, dateEntree: String, dateSortie: String, montantLoyer: String, montantCharges: String, statut: String) {
+    fun updateContrat(
+        id: Long,
+        dateEntree: String,
+        dateSortie: String,
+        montantLoyer: String,
+        montantCharges: String,
+        statut: String,
+        appartementId: Long
+    ) {
         viewModelScope.launch {
             try {
                 val contrat = Contrat(
@@ -59,23 +84,21 @@ class ContratViewModel : ViewModel() {
                     dateSortie = dateSortie,
                     montantLoyer = montantLoyer.toDouble().toString(),
                     montantCharges = montantCharges.toDouble().toString(),
-                    statut = statut
+                    statut = statut,
+                    appartement = AppartementRef(appartementId)
                 )
                 repository.update(id, contrat)
                 loadContrats()
             } catch (e: Exception) {
-                println("❌ Erreur modification : ${e.message}")
+                println("❌ Erreur modification contrat : ${e.message}")
             }
         }
     }
 
     fun deleteContrat(id: Long) {
         viewModelScope.launch {
-            try {
-                repository.delete(id)
-                loadContrats()
-            } catch (e: Exception) {
-                println("❌ Erreur suppression : ${e.message}")
+            if (repository.deleteContrat(id)) {
+                _contrats.value = _contrats.value.filterNot { it.id == id }
             }
         }
     }

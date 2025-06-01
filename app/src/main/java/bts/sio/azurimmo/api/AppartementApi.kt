@@ -1,17 +1,18 @@
 package bts.sio.azurimmo.api
 
 import bts.sio.azurimmo.model.Appartement
-import retrofit2.http.Body
-import retrofit2.http.DELETE
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.PUT
-import retrofit2.http.Path
+import retrofit2.http.*
 
 interface AppartementApi {
 
     @GET("appartements")
     suspend fun getAll(): List<Appartement>
+
+    @GET("appartements/{id}")
+    suspend fun getById(@Path("id") id: Long): Appartement
+
+    @GET("appartements/batiment/{batimentId}")
+    suspend fun getByBatiment(@Path("batimentId") batimentId: Long): List<Appartement>
 
     @POST("appartements")
     suspend fun create(@Body appartement: Appartement): Appartement

@@ -1,6 +1,7 @@
 package bts.sio.azurimmo.api
 
 import bts.sio.azurimmo.model.Contrat
+import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
@@ -13,6 +14,9 @@ interface ContratApi {
     @GET("contrats")
     suspend fun getAll(): List<Contrat>
 
+    @GET("contrats/appartement/{appartementId}")
+    suspend fun getByAppartement(@Path("id") appartementId: Long): List<Contrat>
+
     @POST("contrats")
     suspend fun create(@Body contrat: Contrat): Contrat
 
@@ -20,5 +24,5 @@ interface ContratApi {
     suspend fun update(@Path("id") id: Long, @Body contrat: Contrat): Contrat
 
     @DELETE("contrats/{id}")
-    suspend fun delete(@Path("id") id: Long)
+    suspend fun deleteContrat(@Path("id") id: Long): Response<Void>
 }
