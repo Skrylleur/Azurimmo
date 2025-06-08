@@ -12,38 +12,39 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import bts.sio.azurimmo.model.Batiment
+import bts.sio.azurimmo.viewmodel.InterventionViewModel
+import bts.sio.azurimmo.model.Intervention
 import bts.sio.azurimmo.viewmodel.AppartementViewModel
-import bts.sio.azurimmo.viewmodel.BatimentViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AppartementScreen(
+fun InterventionScreen(
     navController: NavHostController,
-    appartementViewModel: AppartementViewModel = viewModel(),
-    batimentViewModel: BatimentViewModel = viewModel()
+    interventionViewModel: InterventionViewModel = viewModel(),
+    appartementViewModel: AppartementViewModel = viewModel()
 ) {
+    val interventions by interventionViewModel.interventions.collectAsState()
     val appartements by appartementViewModel.appartements.collectAsState()
-    val batiments by batimentViewModel.batiments.collectAsState()
 
-    var numero by remember { mutableStateOf("") }
-    var surface by remember { mutableStateOf("") }
-    var nbPieces by remember { mutableStateOf("") }
     var description by remember { mutableStateOf("") }
-    var selectedBatiment by remember { mutableStateOf<Batiment?>(null) }
-
-    var showForm by remember { mutableStateOf(false) }
+    var typeInter by remember { mutableStateOf("") }
+    var dateInter by remember { mutableStateOf("") }
+    var selectedAppartementId by remember { mutableStateOf<Long?>(null) }
     var expanded by remember { mutableStateOf(false) }
 
+    var interventionAModifier by remember { mutableStateOf<Intervention?>(null) }
+    var modifierVisible by remember { mutableStateOf(false) }
+    var showForm by remember { mutableStateOf(false) }
+
     LaunchedEffect(Unit) {
-        batimentViewModel.loadBatiments()
+        interventionViewModel.loadAll()
         appartementViewModel.loadAppartements()
     }
 
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Appartements") },
+                title = { Text("Interventions") },
                 navigationIcon = {
                     IconButton(onClick = {
                         navController.navigate("home") {
@@ -63,33 +64,45 @@ fun AppartementScreen(
                 .fillMaxSize()
         ) {
             if (!showForm) {
-                Button(onClick = { showForm = true }, modifier = Modifier.fillMaxWidth()) {
-                    Text("Ajouter un appartement")
+                Button(
+                    onClick = { showForm = true },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text("Ajouter une intervention")
                 }
             }
 
             if (showForm) {
                 Spacer(modifier = Modifier.height(8.dp))
-                OutlinedTextField(value = numero, onValueChange = { numero = it }, label = { Text("Numéro") }, modifier = Modifier.fillMaxWidth())
-                OutlinedTextField(value = surface, onValueChange = { surface = it }, label = { Text("Surface") }, modifier = Modifier.fillMaxWidth())
-                OutlinedTextField(value = nbPieces, onValueChange = { nbPieces = it }, label = { Text("Nombre de pièces") }, modifier = Modifier.fillMaxWidth())
-                OutlinedTextField(value = description, onValueChange = { description = it }, label = { Text("Description") }, modifier = Modifier.fillMaxWidth())
 
-                Spacer(modifier = Modifier.height(8.dp))
-                ExposedDropdownMenuBox(expanded = expanded, onExpandedChange = { expanded = !expanded }) {
+                OutlinedTextField(value = description, onValueChange = { description = it }, label = { Text("Description") }, modifier = Modifier.fillMaxWidth())
+                OutlinedTextField(value = typeInter, onValueChange = { typeInter = it }, label = { Text("Type") }, modifier = Modifier.fillMaxWidth())
+                OutlinedTextField(value = dateInter, onValueChange = { dateInter = it }, label = { Text("Date") }, modifier = Modifier.fillMaxWidth())
+
+                ExposedDropdownMenuBox(
+                    expanded = expanded,
+                    onExpandedChange = { expanded = !expanded }
+                ) {
                     OutlinedTextField(
                         readOnly = true,
-                        value = selectedBatiment?.adresse ?: "Sélectionner un bâtiment",
+                        value = appartements.find { it.id == selectedAppartementId }?.let { "Appartement n°${it.id}" } ?: "Sélectionner un appartement",
                         onValueChange = {},
-                        label = { Text("Bâtiment") },
-                        modifier = Modifier.menuAnchor().fillMaxWidth()
+                        label = { Text("Appartement") },
+                        trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+                        modifier = Modifier
+                            .menuAnchor()
+                            .fillMaxWidth()
                     )
-                    ExposedDropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
-                        batiments.forEach { batiment ->
+
+                    ExposedDropdownMenu(
+                        expanded = expanded,
+                        onDismissRequest = { expanded = false }
+                    ) {
+                        appartements.forEach { appart ->
                             DropdownMenuItem(
-                                text = { Text("${batiment.adresse} (${batiment.ville})") },
+                                text = { Text("Appartement n°${appart.id}") },
                                 onClick = {
-                                    selectedBatiment = batiment
+                                    selectedAppartementId = appart.id
                                     expanded = false
                                 }
                             )
@@ -98,19 +111,13 @@ fun AppartementScreen(
                 }
 
                 Spacer(modifier = Modifier.height(8.dp))
+
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     OutlinedButton(
-                        onClick = {
-                            showForm = false
-                            numero = ""
-                            surface = ""
-                            nbPieces = ""
-                            description = ""
-                            selectedBatiment = null
-                        },
+                        onClick = { showForm = false },
                         modifier = Modifier.weight(1f)
                     ) {
                         Text("Annuler")
@@ -119,28 +126,27 @@ fun AppartementScreen(
                     Button(
                         onClick = {
                             if (
-                                numero.isNotBlank() && surface.isNotBlank() &&
-                                nbPieces.isNotBlank() && description.isNotBlank() &&
-                                selectedBatiment != null
+                                description.isNotBlank() &&
+                                typeInter.isNotBlank() &&
+                                dateInter.isNotBlank() &&
+                                selectedAppartementId != null
                             ) {
-                                appartementViewModel.addAppartement(
-                                    numero.toInt(),
-                                    surface.toFloat(),
-                                    nbPieces.toInt(),
+                                interventionViewModel.addIntervention(
                                     description,
-                                    selectedBatiment!!.id!!
+                                    typeInter,
+                                    dateInter,
+                                    selectedAppartementId!!
                                 )
-                                showForm = false
-                                numero = ""
-                                surface = ""
-                                nbPieces = ""
                                 description = ""
-                                selectedBatiment = null
+                                typeInter = ""
+                                dateInter = ""
+                                selectedAppartementId = null
+                                showForm = false
                             }
                         },
                         modifier = Modifier.weight(1f)
                     ) {
-                        Text("Valider l’ajout")
+                        Text("Valider")
                     }
                 }
 
@@ -148,26 +154,23 @@ fun AppartementScreen(
             }
 
             Divider(modifier = Modifier.padding(vertical = 8.dp))
-            Text("Liste des appartements", style = MaterialTheme.typography.titleMedium)
+            Text("Liste des interventions", style = MaterialTheme.typography.titleMedium)
             Spacer(modifier = Modifier.height(8.dp))
 
             LazyColumn {
-                items(appartements) { appart ->
+                items(interventions) { inter ->
                     Card(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(vertical = 4.dp)
                             .clickable {
-                                navController.navigate("appartement/${appart.id}")
+                                navController.navigate("intervention/${inter.id}")
                             }
                     ) {
                         Column(modifier = Modifier.padding(8.dp)) {
-                            Text("ID : ${appart.id}")
-                            Text("Numéro : ${appart.numero}")
-                            Text("Surface : ${appart.surface}")
-                            Text("Pièces : ${appart.nbPieces}")
-                            Text("Description : ${appart.description}")
-                            Text("Bâtiment ID : ${appart.batiment?.id}")
+                            Text("Description : ${inter.description}")
+                            Text("Type : ${inter.typeInter}")
+                            Text("Date : ${inter.dateInter}")
                         }
                     }
                 }

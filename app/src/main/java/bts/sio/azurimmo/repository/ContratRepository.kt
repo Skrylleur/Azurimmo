@@ -10,6 +10,10 @@ class ContratRepository(private val api: ContratApi) {
         return api.getAll()
     }
 
+    suspend fun getByAppartement(appartementId: Long): List<Contrat> {
+        return api.getByAppartement(appartementId)
+    }
+
     suspend fun create(contrat: Contrat): Contrat {
         return api.create(contrat)
     }
@@ -18,7 +22,8 @@ class ContratRepository(private val api: ContratApi) {
         return api.update(id, contrat)
     }
 
-    suspend fun delete(id: Long) {
-        api.delete(id)
+    suspend fun deleteContrat(id: Long): Boolean {
+        val response = api.deleteContrat(id)
+        return response.isSuccessful
     }
 }
