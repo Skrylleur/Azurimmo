@@ -74,4 +74,4 @@ Exemples d’URL :
 ### Étapes
 1. Cloner le repo :
    ```bash
-   git clone https://github.com/<ton-username>/azurimmo-mobile.git
+   git clone https://github.com/Skrylleur/Azurimmo.git
